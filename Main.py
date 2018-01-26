@@ -4,8 +4,8 @@ Module that is running json validation server
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
-HOST_NAME = 'localhost'
-PORT_NUMBER = 9000
+HOST_NAME = '0.0.0.0'
+PORT_NUMBER = 80
 
 
 class MyError:
@@ -47,7 +47,8 @@ class MyHandler(BaseHTTPRequestHandler):
             error_place = 'line {exception.lineno} column {exception.colno} (char {exception.pos})'.format(exception=exception)
             filename = str(self.path).split('/')[-1]
             connection_id = int(str(self.connection).split(', ')[-1][0:5])
-            my_error = MyError(abs(exception.__hash__()), error_msg, error_place, filename, connection_id)
+            my_error = MyError(1, error_msg, error_place, filename, connection_id)
+            my_error.error_code = id(my_error)
             pretty_error = json.dumps(my_error.default(), indent=4)
             self.send_response(400)
             self.wfile.write(bytes('\n', 'utf-8'))
