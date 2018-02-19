@@ -50,7 +50,7 @@ class MyHandler(BaseHTTPRequestHandler):
             my_error = MyError(1, error_msg, error_place, filename, connection_id)
             my_error.error_code = id(my_error)
             pretty_error = json.dumps(my_error.default(), indent=4)
-            self.send_response(400)
+            self.send_response(200)
             self.wfile.write(bytes('\n', 'utf-8'))
             self.wfile.write(bytes(pretty_error, "utf-8"))
 

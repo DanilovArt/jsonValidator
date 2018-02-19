@@ -1,0 +1,24 @@
+apply plugin: 'application'
+apply plugin: 'docker'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+    }
+}
+
+docker {
+    baseImage "python:3.5.2-alpine"
+}
+
+task buildImage(type: Docker) {
+    applicationName = "validator-gradle"
+    workingDir("/app")
+    exposePort(80)
+    addFile("./Main.py", "app/Main.py")
+    defaultCommand = ["python3", "app/Main.py"]
+}
