@@ -1,0 +1,24 @@
+pipeline {
+    agent any 
+    stages {
+        stage('Building') {
+            steps {
+                sh 'docker build -t v github.com/DanilovArt/jsonValidator'
+                echo 'Building OK'
+            }
+        }
+        stage('Start') {
+            steps {
+                sh 'docker run -t -i --rm -p 80:80'
+                echo 'Start OK'
+            }
+        }
+        stage('Work') {
+            steps {
+                echo 'It Works! Use:'
+                echo 'curl -s --upload-file filename.json http://localhost'
+                echo 'to validate JSON file'
+            }
+        }
+    }
+}
