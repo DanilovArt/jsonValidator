@@ -1,0 +1,84 @@
+Started by user Danilov AD
+Obtained jenkinsfile from git https://github.com/DanilovArt/jsonValidator/
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/jenkins
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+ > git rev-parse --is-inside-work-tree # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/DanilovArt/jsonValidator/ # timeout=10
+Fetching upstream changes from https://github.com/DanilovArt/jsonValidator/
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/DanilovArt/jsonValidator/ +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
+Checking out Revision 13943d99959daeb1358b139c6f4633139bbebdad (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 13943d99959daeb1358b139c6f4633139bbebdad
+Commit message: "some fix"
+ > git rev-list --no-walk d22b17ea681c41a5be986f3517271a0e2c20c814 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Building)
+[Pipeline] sh
+[jenkins] Running shell script
++ docker build -t v github.com/DanilovArt/jsonValidator
+Sending build context to Docker daemon  299.5kB
+
+Step 1/6 : FROM python:3.5.2-alpine
+ ---> e70a322afafb
+Step 2/6 : WORKDIR /app
+ ---> Using cache
+ ---> 225c65f94e95
+Step 3/6 : ADD . /app
+ ---> 668b89dc9601
+Step 4/6 : EXPOSE 80
+ ---> Running in cd437934f52f
+Removing intermediate container cd437934f52f
+ ---> b85544f10e41
+Step 5/6 : ENV NAME validator
+ ---> Running in 0f60c475208c
+Removing intermediate container 0f60c475208c
+ ---> 3556cdc4fd30
+Step 6/6 : CMD ["python3", "Main.py"]
+ ---> Running in 07ff07d0fa8e
+Removing intermediate container 07ff07d0fa8e
+ ---> b8131a6762e3
+Successfully built b8131a6762e3
+Successfully tagged v:latest
+[Pipeline] echo
+Building OK
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Start)
+[Pipeline] sh
+[jenkins] Running shell script
++ docker run -d -i --rm -p 4000:80 v
+913fdb530fd351723b5f1b4914f72f08de68bbf93e90cec6f480ab2f48da4d3d
+[Pipeline] echo
+Start OK
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Work)
+[Pipeline] echo
+It Works! Use:
+[Pipeline] echo
+curl -s --upload-file filename.json http://localhost
+[Pipeline] echo
+to validate JSON file
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
